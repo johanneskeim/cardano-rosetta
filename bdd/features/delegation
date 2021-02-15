@@ -1,0 +1,38 @@
+Feature: Delegation
+
+    Rule: Delegation transaction can be constructed
+
+        Scenario: Valid case
+		    Given exchange holds some funds in my address
+		    And my chosen stake pool is registered
+		    When I provide details of my delegation intent
+		    Then exchange can construct a transaction for this delegation
+		    And the delegation transaction matches my delegation intent
+
+        Scenario: Invalid case – no funds
+	    	Given exchange holds no funds in my address
+    		When I provide details of my delegation intent
+	    	Then an error is returned (this validation may not occur until submit)
+    		And exchange cannot construct a transaction for this delegation
+
+        Scenario: Invalid case – not enough funds to delegate (less than 2ADA)
+            Given ...
+    
+        Scenario: Invalid case – not my address (provide other pool id)
+            Given ...
+
+
+    Rule: Delegation transaction can be submitted
+
+        Scenario: Valid delegation transaction
+		    Given exchange holds funds in my address
+    		And exchange has constructed a valid delegation transaction
+	    	When exchange submits the transaction
+		    Then a successful response is returned
+
+        Scenario: Invalid case – stakepool not registered
+	    	Given exchange holds funds in my address
+     	    And exchange has constructed a delegation transaction using a stakepool id that is not registered
+	    	When exchange submits the transaction
+    		Then an error is returned
+	    	And delegation is not accepted on the blockchain

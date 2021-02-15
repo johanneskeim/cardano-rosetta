@@ -1,0 +1,31 @@
+Feature: Pledge to a stakepool
+
+    Rule: Pledging transaction can be constructed
+  
+        Scenario: Valid case
+            Given there is a stakepool for which I am the owner
+            When I provide details of my pledging intent (consider using 'data table' with valid values)
+            Then exchange can construct a transaction for my pledge
+            And the delegation transaction matches my pledging intent
+	
+    	Scenario: Invalid case - no enough funds to pledge
+            Given ...
+	
+    	Scenario: Invalid case - stakepool not registered
+            Given ...
+
+
+    Rule: Pledging transaction can be submitted
+  
+        Scenario: Valid pledging transaction
+            Given there is a stakepool for which I am the owner
+            And exchange has constructed a valid pledging transaction
+            When exchange submits the transaction
+            Then a successful response is returned
+            And pledge can be proven(?)
+
+        Scenario: Invalid case – stakepool not registered
+		    Given exchange has constructed a delegation transaction using a stakepool id that is not registered
+		    When exchange submits the transaction
+    		Then an error is returned
+    		And pledge is not accepted on the blockchain

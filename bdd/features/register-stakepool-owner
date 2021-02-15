@@ -1,0 +1,44 @@
+Feature: Register as stakepool owner
+
+    Rule: Constructing a stakepool registration certificate (this may be client-side only and not Rosetta)
+
+        Scenario: Valid case - constructing a stakepool registration certificate
+            Given exchange holds funds in my address
+            When exchange is provided with registration details
+            Then exchange can successful construct a stakepool registration certiifcate
+  
+  
+    Rule: Publishing a stakepool registration certificate
+
+        Scenario: Valid case - publish stakepool registration certificate for pool that I operate
+            Given exchange holds funds in my address
+            And exchange has successfully constructed a stakepool registration certificate for pool that I operate
+            And exchange has witnessed the certificate (action not performed with Rosetta)
+            When exchange publishes this certificate
+            Then regestration transaction is accepted on the blockchain
+    
+        Scenario: Valid case - publish stakepool registration certificate for a 3rd party pool
+            Given exchange holds funds in my address
+            And exchange has successfully constructed a stakepool registration certificate for a 3rd party pool
+            And exchange has witnessed the certificate (action not performed with Rosetta)
+            When exchange publishes this certificate
+           Then regestration transaction is accepted on the blockchain
+    
+        Scenario: Invalid case - for a 3rd party pool (that I don't have control of?)
+            Given ...
+      
+        Scenario: Invalid case - invalid witness
+            Given exchange holds funds in my address
+            And exchange has successfully constructed a stakepool registration certificate
+            And exchange has witnessed the certificate with a different key (is this possible?)
+            When exchange publishes this certificate
+            Then an error is returned
+            And regestration transaction is not accepted on the blockchain
+      
+        Scenario: Invalid case - missing witness
+            Given exchange holds funds in my address
+            And exchange has successfully constructed a stakepool registration certificate
+            And exchange has not witnessed the certificate
+            When exchange publishes this certificate
+            Then an error is returned
+            And regestration transaction is not accepted on the blockchain
